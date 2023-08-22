@@ -5,6 +5,8 @@ import lombok.*;
 
 @Data
 @TableName("user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
   private long id;
   private String name;

@@ -6,20 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 public class MyBatusPlusTest {
 
   @Autowired
   private UserMapper userMapper;
-
-  @Test
-  public void testSelectList() {
-    List<User> userList = userMapper.selectList(null);
-    userList.forEach(System.out::println);
-  }
 
   @Test
   public void testInsert() {
@@ -46,12 +39,66 @@ public class MyBatusPlusTest {
     userMapper.deleteById(user);
   }
 
-  // 通过 List 来 batchDelete （批量删除）
+  //通过多个id批量删除
   @Test
-  public void testDeleteBatchIds() {
-    List<Integer> list = new ArrayList<>();
-    list.add(0);
-    userMapper.deleteBatchIds(list);
+  public void testDeleteBatchIds(){
+  //DELETE FROM user WHERE id IN ( ? , ? , ? )
+    List<Long> idList = Arrays.asList(0L);
+    int result = userMapper.deleteBatchIds(idList);
+    System.out.println("受影响行数："+result);
+  }
+
+  //根据map集合中所设置的条件删除记录
+  @Test
+  public void testDeleteByMap() {
+    //DELETE FROM user WHERE name = ? AND age = ?
+    Map<String, Object> map = new HashMap<>();
+    map.put("age", 12);
+    map.put("name", "张三");
+    int result = userMapper.deleteByMap(map);
+    System.out.println("受影响行数："+result);
+  }
+
+  // 通过 entity 并通过 entity 的 ID 来修改数据
+  @Test
+  public void testUpdateById() {
+    User user = new User(0L, "admin", 22, null);
+    //UPDATE user SET name=?, age=? WHERE id=?
+    int result = userMapper.updateById(user);
+    System.out.println("受影响行数："+result);
+  }
+
+
+  // 通过 ID 查询用户数据
+  @Test
+  public void testSelectById() {
+    User user = userMapper.selectById(0L);
+    System.out.println(user);
+  }
+
+  // 通过　ID List　查询数据
+  @Test
+  public void testSelectBatchIds() {
+    List<Long> idList = Arrays.asList(0L, 1L, 2L);
+    List<User> userList = userMapper.selectBatchIds(idList);
+    System.out.println(userList);
+  }
+  // 通过map条件查询用户信息
+  @Test
+  public void testSelectByMap(){
+  //SELECT id,name,age,email FROM user WHERE name = ? AND age = ?
+    Map<String, Object> map = new HashMap<>();
+    map.put("age", 22);
+    map.put("name", "admin");
+    List<User> list = userMapper.selectByMap(map);
+    list.forEach(System.out::println);
+  }
+
+  // 查询所有数据
+  @Test
+  public void testSelectList() {
+    List<User> userList = userMapper.selectList(null);
+    userList.forEach(System.out::println);
   }
 
 
