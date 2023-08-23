@@ -1,5 +1,6 @@
 package com.atguigu.mybatisplus.pojo;
 
+import com.atguigu.mybatisplus.enums.SexEnum;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -15,6 +16,8 @@ public class User {
 
   @TableField("name")
   private String name;
+
+  private SexEnum sex;
 
   private Integer age;
 

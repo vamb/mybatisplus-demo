@@ -67,7 +67,10 @@ public class MyBatusPlusTest {
   // 通过 entity 并通过 entity 的 ID 来修改数据
   @Test
   public void testUpdateById() {
-    User user = new User(0L, "admin", 22, null, 0);
+    User user = new User();
+    user.setId(0L);
+    user.setName("admin");
+    user.setAge(22);
     //UPDATE user SET name=?, age=? WHERE id=?
     int result = userMapper.updateById(user);
     System.out.println("受影响行数："+result);
